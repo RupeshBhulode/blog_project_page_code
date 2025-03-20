@@ -1,0 +1,68 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 20px;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+       
+    }
+    .card {
+        background: rgba(232, 228, 228, 0.6);
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        text-align: center;
+    }
+    h1 {
+        color: #080808;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    h2 {
+        color: #080707;
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+    p {
+        font-size: 18px;
+        color: #020202;
+    }
+    img {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div ng-controller="singleController" class="card">
+    <h1>{{blog.title}}</h1>
+    <h2>Author: {{blog.author}}</h2>
+    <h2>Category: {{blog.category}}</h2>
+    <p><strong>Content:</strong> {{blog.content}}</p>
+    
+    <img ng-src="{{blog.imageData || blog.image}}" alt="Blog Image" width="200">
+    <p><strong>Published Date:</strong> {{blog.timestamp}}</p>
+    <br>
+    <a href="/index.html#!/all_blogs"><button>Back To Blogs</button></a>
+</div>
+
+</body>
+</html>

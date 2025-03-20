@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background: linear-gradient(to right, rgb(24, 72, 173), rgb(94, 81, 38));
+           
+        }
+        .navbar-link {
+    color: white; /* Set navbar links to white */
+    text-decoration: none; /* Optional: Removes underline */
+     /* Optional: Makes text bold */
+}
+
+.navbar-link:hover {
+    text-decoration: underline; /* Optional: Adds underline on hover */
+}
+.footer-text {
+    color: white; /* Set text color to white */
+    text-align: center; /* Optional: Centers the text */
+    font-size: 14px; /* Optional: Adjusts font size */
+}
+
+
+        
+    </style>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+
+<body>
+
+    <div ng-app="MyApp">
+        <a href="#!home" class="navbar-link">Home</a> |
+<a href="#!about" class="navbar-link">About</a> |
+<a href="#!contact" class="navbar-link">Contact</a> |
+<a href="#!add" class="navbar-link">Add</a> |
+<a href="#!all_blogs" class="navbar-link">All Blogs</a>
+
+
+
+        <div ng-view></div>
+
+        <p class="footer-text">© 2025 Page Code. All Rights Reserved.</p>
+
+    </div>
+
+    <script>
+        var app = angular.module("MyApp", ["ngRoute"]);
+        app.config(function ($routeProvider) {
+            $routeProvider
+                .when("/", {
+                    templateUrl: "Home.html",
+                    controller: "homeController"
+                })
+                .when("/home", {
+                    templateUrl: "Home.html",
+                })
+                .when("/about", {
+                    templateUrl: "About.html",
+                })
+                .when("/contact", {
+                    templateUrl: "Contact.html",
+                })
+                .when("/single", {
+                    templateUrl: "Single.html",
+                    controller:"singleController"
+                })
+                .when("/add", {
+                    templateUrl: "Add.html",
+                    controller: "BlogController"
+                })
+                .when("/all_blogs", {
+                    templateUrl: "All_Blogs.html",
+                    controller:"AllBlogController"
+                })
+        })
+
+
+        app.controller("BlogController", function ($scope) {
+            $scope.blog = {};
+            $scope.blogs= JSON.parse(localStorage.getItem("blogs"))    || [];
+            $scope.blog_submit=function(){
+                if($scope.blog.title && $scope.blog.author && $scope.blog.content && $scope.blog.category ){
+                     $scope.blog.timestamp= new Date().toLocaleString();
+                       $scope.blogs.push($scope.blog);
+                       localStorage.setItem("blogs", JSON.stringify($scope.blogs));
+                       $scope.blog={};
+                       $scope.k=false;
+                }
+                else{
+                    alert("Please fill inputs");
+                }
+            }
+
+
+
+
+            $scope.delete=function(i){
+                $scope.blogs.splice(i,1);
+                localStorage.setItem("blogs", JSON.stringify($scope.blogs));
+            }
+        })
+
+
+        app.directive("fileinput", function () {
+            return {
+                restrict: "A",
+                link: function (scope, element) {
+                    element.bind("change", function (event) {
+                        var file = event.target.files[0];
+                        if (file) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                var img = new Image();
+                                img.src = e.target.result;
+                                img.onload = function () {
+                                    var canvas = document.createElement("canvas");
+                                    var ctx = canvas.getContext("2d");
+        
+                                    // Set new image size (reduce resolution)
+                                    var maxWidth = 800; // Set max width
+                                    var maxHeight = 600; // Set max height
+                                    var width = img.width;
+                                    var height = img.height;
+        
+                                    if (width > maxWidth || height > maxHeight) {
+                                        var aspectRatio = width / height;
+                                        if (width > height) {
+                                            width = maxWidth;
+                                            height = width / aspectRatio;
+                                        } else {
+                                            height = maxHeight;
+                                            width = height * aspectRatio;
+                                        }
+                                    }
+        
+                                    canvas.width = width;
+                                    canvas.height = height;
+                                    ctx.drawImage(img, 0, 0, width, height);
+        
+                                    // Convert to compressed Base64 with JPEG format (lossy compression)
+                                    var compressedDataUrl = canvas.toDataURL("image/jpeg", 0.7); // 0.7 = 70% quality
+        
+                                    scope.$apply(function () {
+                                        scope.blog.imageData = compressedDataUrl; // Store compressed image
+                                    });
+                                };
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
+            };
+        });
+        
+
+
+app.controller("AllBlogController",function($scope){
+    $scope.blogs= JSON.parse(localStorage.getItem("blogs")) ;
+
+    $scope.defaultBlogs = [
+    {
+        title: "Introduction to AngularJS",
+        author: "John Doe",
+        content: "AngularJS is a JavaScript framework for building dynamic web applications.",
+        category: "Web Development",
+        image: "a.png",
+        timestamp: new Date().toLocaleString()
+    },
+    {
+        title: "Understanding Directives",
+        author: "Jane Smith",
+        content: "Directives in AngularJS are markers on a DOM element that tell AngularJS to do something.",
+        category: "AngularJS",
+        image: "b.png",
+        timestamp: new Date().toLocaleString()
+    },
+    {
+        title: "The Power of Two-Way Data Binding",
+        author: "Alice Johnson",
+        content: "Two-way data binding synchronizes data between the model and the view in AngularJS.",
+        category: "Frontend Development",
+        image: "c.png",
+        timestamp: new Date().toLocaleString()
+    }
+];
+
+
+ $scope.view=function(blog)
+ {
+     localStorage.setItem("selectedBlog", JSON.stringify(blog));
+     window.location.href="/index.html#!/single"
+ }
+})
+
+app.controller("homeController",function($scope){
+     var t_blogs= JSON.parse(localStorage.getItem("blogs")) || [] ;
+       if(t_blogs.length >0)
+       {
+          $scope.latestBlog = t_blogs[t_blogs.length-1];
+       }
+       else{
+        $scope.latestBlog=null;
+       }
+
+
+       $scope.view=function(blog)
+ {
+     localStorage.setItem("selectedBlog", JSON.stringify(blog));
+     window.location.href="/index.html#!/single"
+ }
+})
+
+
+app.controller("singleController", function($scope){
+             $scope.blog =  JSON.parse (localStorage.getItem("selectedBlog"));
+})
+
+    </script>
+</body>
+
+</html>

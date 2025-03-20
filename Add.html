@@ -1,0 +1,104 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h4 {
+        color: #ffffff;
+    }
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+    }
+    input, textarea, select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    .blog-container {
+        background: rgba(232, 228, 228, 0.6);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin-top: 20px;
+    }
+    .blog-list {
+        list-style-type: none;
+        padding: 0;
+    }
+    .blog-list li {
+        background: rgba(232, 228, 228, 0.6);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
+    }
+    .blog-list img {
+        display: block;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+</style>
+
+<div ng-controller="BlogController">
+    <h1>Add Blogs Page</h1>
+    <button ng-click="k= !k">Add Blogs</button><br>
+
+    <div class="blog-container" ng-show="k">
+        <label>Title</label> <input type="text" ng-model="blog.title" required><br>
+        <label>Author Name</label> <input type="text" ng-model="blog.author" required><br>
+        
+        <!-- Image Upload-->
+        <label>Image</label> <input type="file" fileinput><br>
+        
+        <!-- Image Preview -->
+        <div ng-if="blog.imageData">
+            <h4>Image Preview</h4>
+            <img ng-src="{{blog.imageData}}" alt="Selected Image" width="200">
+        </div>
+
+        <label>Content</label> <textarea ng-model="blog.content" required></textarea><br>
+
+        <label>Category</label>
+        <select ng-model="blog.category" required>
+            <option value="Greedy">Greedy</option>
+            <option value="DP">DP</option>
+            <option value="Backtracking">Backtracking</option>
+            <option value="Graph">Graph</option>
+        </select> <br>
+
+        <button ng-click="blog_submit()">Submit</button>
+    </div>
+
+    <h2>Blogs List</h2>
+    <ul class="blog-list">
+        <li ng-repeat="b in blogs track by $index">
+            <strong>Title:</strong> {{b.title}} <br>
+            <strong>Author:</strong> {{b.author}} <br>
+            <strong>Category:</strong> {{b.category}} <br>
+            <strong>Content:</strong> {{b.content}} <br>
+            <strong>Image:</strong>
+            <img ng-src="{{b.imageData}}" alt="Blog Image" width="200"><br>
+            <strong>Time:</strong> {{b.timestamp}} <br>
+            <button ng-click="delete($index)">Delete</button>
+        </li>
+    </ul>
+</div>

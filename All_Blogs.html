@@ -1,0 +1,64 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+     h2 {
+        color: #f3eded;
+    }
+    h1 {
+        color: #e6e6e6;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        background: rgba(232, 228, 228, 0.6);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
+    }
+    img {
+        display: block;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+    button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div ng-controller="AllBlogController">
+    <h1>All Blogs Page</h1>
+    <ul>
+        <li ng-repeat="blog in defaultBlogs">
+            <h2>{{blog.title}}</h2>
+            <p><strong>Category:</strong> {{blog.category}}</p>
+            <img ng-src="{{blog.image}}" width="200"> <br>
+            <button ng-click="view(blog)">View Complete</button>
+        </li>
+    </ul>
+    
+    <h2>Blog List</h2>
+    <ul>
+        <li ng-repeat="blog in blogs">
+            <h2><strong>Title - </strong>{{blog.title}}</h2>
+            <p><strong>Category - </strong>{{blog.category}}</p>
+            <img ng-src="{{blog.imageData}}" width="200"> <br>
+            <button ng-click="view(blog)">View Complete</button>
+        </li>
+    </ul>
+</div>

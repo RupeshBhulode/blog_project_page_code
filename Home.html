@@ -1,0 +1,56 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+    h1 {
+        color: #e3d8d8;
+    }
+    p {
+        font-size: 16px;
+        color: #cfc4c4;
+    }
+    .blog-container {
+        background: rgba(232, 228, 228, 0.6);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin-top: 20px;
+    }
+    .blog-container img {
+        display: block;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+    .blog-container button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-top: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .blog-container button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div ng-controller="homeController">
+    <h1>Home Page</h1>
+    <p>Welcome to the Home Page!</p>
+
+    <h1>Your Latest Blog</h1>
+
+    <div class="blog-container" ng-if="latestBlog">
+        <h2>Title - {{latestBlog.title}}</h2>
+        <h2>Category - {{latestBlog.category}}</h2>
+        <img ng-src="{{latestBlog.imageData}}" alt="Blog Img" width="200"><br>
+        <button ng-click="view(latestBlog)">Read More</button>
+    </div>
+
+    <p ng-if="!latestBlog">No Blogs Available</p>
+</div>
